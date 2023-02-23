@@ -1,29 +1,6 @@
 class Graph:
-    """
-    A class representing graphs as adjacency lists and implementing various algorithms on the graphs. Graphs in the class are not oriented. 
-    Attributes: 
-    -----------
-    nodes: NodeType
-        A list of nodes. Nodes can be of any immutable type, e.g., integer, float, or string.
-        We will usually use a list of integers 1, ..., n.
-    graph: dict
-        A dictionnary that contains the adjacency list of each node in the form
-        graph[node] = [(neighbor1, p1, d1), (neighbor1, p1, d1), ...]
-        where p1 is the minimal power on the edge (node, neighbor1) and d1 is the distance on the edge
-    nb_nodes: int
-        The number of nodes.
-    nb_edges: int
-        The number of edges. 
-    """
 
     def __init__(self, nodes=[]):
-        """
-        Initializes the graph with a set of nodes, and no edges. 
-        Parameters: 
-        -----------
-        nodes: list, optional
-            A list of nodes. Default is empty.
-        """
         self.nodes = nodes
         self.graph = dict([(n, []) for n in nodes])
         self.nb_nodes = len(nodes)
@@ -31,7 +8,6 @@ class Graph:
     
 
     def __str__(self):
-        """Prints the graph as a list of neighbors for each node (one per line)"""
         if not self.graph:
             output = "The graph is empty"            
         else:
@@ -41,21 +17,11 @@ class Graph:
         return output
     
     def add_edge(self, node1, node2, power_min, dist=1):
-        """
-        Adds an edge to the graph. Graphs are not oriented, hence an edge is added to the adjacency list of both end nodes. 
-
-        Parameters: 
-        -----------
-        node1: NodeType
-            First end (node) of the edge
-        node2: NodeType
-            Second end (node) of the edge
-        power_min: numeric (int or float)
-            Minimum power on this edge
-        dist: numeric (int or float), optional
-            Distance between node1 and node2 on the edge. Default is 1.
-        """
-        raise NotImplementedError
+       
+       self.nb_edges +=1
+       self.graph[node1].append((node2, power_min, dist))
+       self.graph[node2].append((node1, power_min, dist))
+       raise NotImplementedError
     
 
     def get_path_with_power(self, src, dest, power):
@@ -100,4 +66,23 @@ def graph_from_file(filename):
     G: Graph
         An object of the class Graph with the graph from file_name.
     """
+
+    with open(filename) as file:
+        ligne1= file.readline().split()
+        n=int(ligne1[0])
+        m=int(ligne1[1])
+        nodes=[i for i in range(1,n+1)]
+        G=graph(nodes)
+        for i in range(m):
+            lignei= file.readline().split()
+            node1=int(lignei[0])
+            node2=int(lignei[1])
+            power_min=int(lignei[2])
+            if len(lignei) > 3:
+                dist = int(lignei[3])
+                G.add_edge(node1, node2, power_min, dist)
+            else :
+                G.add_edge(node1, node2, power_min)
+    return G
+
     raise NotImplementedError
