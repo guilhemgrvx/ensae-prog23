@@ -131,6 +131,13 @@ class Graph:
 
         return p_min, path
 
+    
+    
+    
+    
+    
+    
+    
 def graph_from_file(filename):
     """
     Reads a text file and returns the graph as an object of the Graph class.
